@@ -3,8 +3,8 @@ import mergeSort from "./sort.js";
 class Node {
   constructor(data) {
     this.data = data;
-    this.left;
-    this.right;
+    this.left = null;
+    this.right = null;
   }
 }
 
@@ -16,13 +16,10 @@ class Tree {
   buildTree(array) {
     if (array.length == 1) {
       let node = new Node(array[0]);
-      node.right = null;
-      node.left = null;
       return node;
     } else if (array.length == 2) {
       let node = new Node(array[0]);
       node.right = this.buildTree([array[1]]);
-      node.left = null;
       return node;
     } else {
       let rootIndex = Math.floor(array.length / 2);
@@ -38,16 +35,54 @@ class Tree {
     }
   }
 
-  insert(value) {}
+  insert(value) {
+    function insertNode(value, node) {
+      if (value > node.data) {
+        if (node.right == null) {
+          node.right = new Node(value);
+        } else {
+          insertNode(value, node.right);
+        }
+      } else if (value < node.data) {
+        if (node.left == null) {
+          node.left = new Node(value);
+        } else {
+          insertNode(value, node.left);
+        }
+      }
+    }
 
-  deleteItem(value) {}
+    insertNode(value, this.root);
+  }
+
+  deleteItem(value) {
+    if (value == this.root.data) {
+        this.root = null;
+        return
+    }
+
+    function deleteNode(value, node) {
+      if (value > node.data) {
+
+        if (deleteNode(value, node.right)) {
+            node.right = null
+        };
+      } else if (value < node.data) {
+        if (deleteNode(value, node.left)) {
+            node.left = null
+        };
+      } else {
+        return true;
+      }
+    }
+
+    deleteNode(value, this.root);
+  }
 }
 
 let testArray = [2, 3, 1, 5, 4, 9];
 
 let testTree = new Tree(testArray);
-
-// console.log(testTree);
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
@@ -61,5 +96,13 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
   }
 };
+
+prettyPrint(testTree.root);
+
+testTree.insert(33);
+testTree.insert(6);
+testTree.insert(0);
+testTree.deleteItem(4);
+testTree = new Tree(testArray);
 
 prettyPrint(testTree.root);
