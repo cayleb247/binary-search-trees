@@ -57,20 +57,19 @@ class Tree {
 
   deleteItem(value) {
     if (value == this.root.data) {
-        this.root = null;
-        return
+      this.root = null;
+      return;
     }
 
     function deleteNode(value, node) {
       if (value > node.data) {
-
         if (deleteNode(value, node.right)) {
-            node.right = null
-        };
+          node.right = null;
+        }
       } else if (value < node.data) {
         if (deleteNode(value, node.left)) {
-            node.left = null
-        };
+          node.left = null;
+        }
       } else {
         return true;
       }
@@ -78,6 +77,44 @@ class Tree {
 
     deleteNode(value, this.root);
   }
+
+  find(value) {
+    function findNode(value, node) {
+      if (value > node.data) {
+        if (node.right == null) {
+          return null;
+        } else {
+          return findNode(value, node.right);
+        }
+      } else if (value < node.data) {
+        if (node.left == null) {
+          return null;
+        } else {
+          return findNode(value, node.left);
+        }
+      } else {
+        return node;
+      }
+    }
+
+    return findNode(value, this.root);
+  }
+
+  levelOrder(callback) {}
+
+  inOrder(callback) {}
+
+  preOrder(callback) {}
+
+  postOrder(callback) {}
+
+  height(value) {}
+
+  depth(value) {}
+
+  isBalanced() {}
+
+  rebalance() {}
 }
 
 let testArray = [2, 3, 1, 5, 4, 9];
@@ -102,7 +139,7 @@ prettyPrint(testTree.root);
 testTree.insert(33);
 testTree.insert(6);
 testTree.insert(0);
-testTree.deleteItem(4);
-testTree = new Tree(testArray);
 
 prettyPrint(testTree.root);
+
+console.log(testTree.find(33));
