@@ -100,7 +100,28 @@ class Tree {
     return findNode(value, this.root);
   }
 
-  levelOrder(callback) {}
+  levelOrder(callback) {
+    if (!callback) {
+      throw new Error("No callback was provided");
+    } else if (!this.root) {
+      throw new Error("There is no root node");
+    }
+
+    let queue = [this.root];
+
+    while (queue.length != 0) {
+      let currentNode = queue[0];
+      currentNode.data = callback(currentNode.data);
+      console.log(currentNode.data);
+      if (currentNode.left) {
+        queue.push(currentNode.left);
+      } 
+      if (currentNode.right) {
+        queue.push(currentNode.right);
+      }
+      queue.shift();
+    }
+  }
 
   inOrder(callback) {}
 
@@ -143,3 +164,6 @@ testTree.insert(0);
 prettyPrint(testTree.root);
 
 console.log(testTree.find(33));
+testTree.levelOrder((x) => x*2)
+
+prettyPrint(testTree.root);
