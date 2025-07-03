@@ -123,11 +123,67 @@ class Tree {
     }
   }
 
-  inOrder(callback) {}
+  inOrder(callback) {
+    if (!callback) {
+      throw new Error("No callback was provided");
+    } else if (!this.root) {
+      throw new Error("There is no root node");
+    }
+    function inOrderStep(root) {
+        if (root.left != null) {
+            inOrderStep(root.left);
+        }
+        root.data = callback(root.data);
+        console.log(`new data is ${root.data}`)
+        if (root.right != null) {
+            inOrderStep(root.right);
+        }
+    }
 
-  preOrder(callback) {}
+    inOrderStep(this.root);
+  }
 
-  postOrder(callback) {}
+  preOrder(callback) {
+    if (!callback) {
+      throw new Error("No callback was provided");
+    } else if (!this.root) {
+      throw new Error("There is no root node");
+    }
+    function preOrderStep(root) {
+        root.data = callback(root.data);
+        console.log(`new data is ${root.data}`)
+        if (root.left != null) {
+            preOrderStep(root.left);
+        }
+        
+        if (root.right != null) {
+            preOrderStep(root.right);
+        }
+    }
+
+    preOrderStep(this.root);
+  }
+
+  postOrder(callback) {
+    if (!callback) {
+      throw new Error("No callback was provided");
+    } else if (!this.root) {
+      throw new Error("There is no root node");
+    }
+    function postOrderStep(root) {
+        if (root.left != null) {
+            postOrderStep(root.left);
+        }
+        
+        if (root.right != null) {
+            postOrderStep(root.right);
+        }
+        root.data = callback(root.data);
+        console.log(`new data is ${root.data}`)
+    }
+
+    postOrderStep(this.root);
+  }
 
   height(value) {}
 
@@ -163,7 +219,11 @@ testTree.insert(0);
 
 prettyPrint(testTree.root);
 
-console.log(testTree.find(33));
-testTree.levelOrder((x) => x*2)
+testTree.inOrder((x) => 2*x);
+prettyPrint(testTree.root);
+testTree.preOrder((x) => 2*x);
+prettyPrint(testTree.root);
+testTree.postOrder((x) => 2*x);
+
 
 prettyPrint(testTree.root);
