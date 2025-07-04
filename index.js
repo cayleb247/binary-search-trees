@@ -137,7 +137,6 @@ class Tree {
         inOrderStep(root.right);
       }
     }
-
     inOrderStep(this.root);
   }
 
@@ -149,11 +148,9 @@ class Tree {
     }
     function preOrderStep(root) {
       root.data = callback(root.data);
-      console.log(`new data is ${root.data}`);
       if (root.left != null) {
         preOrderStep(root.left);
       }
-
       if (root.right != null) {
         preOrderStep(root.right);
       }
@@ -177,7 +174,6 @@ class Tree {
         postOrderStep(root.right);
       }
       root.data = callback(root.data);
-      console.log(`new data is ${root.data}`);
     }
 
     postOrderStep(this.root);
@@ -276,18 +272,9 @@ class Tree {
   rebalance() {
     let treeData = []
     this.inOrder(x => treeData.push(x));
-    console.log(treeData);
     this.root = this.buildTree(mergeSort([...new Set(treeData)]));
   }
 }
-
-let testArray = [
-   0, 2,  4, 12,
-  40, 48, 72, 264
-];
-
-
-let testTree = new Tree(testArray);
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
@@ -302,25 +289,4 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-prettyPrint(testTree.root);
-
-testTree.insert(33);
-testTree.insert(6);
-testTree.insert(0);
-
-prettyPrint(testTree.root);
-
-testTree.inOrder((x) => 2 * x);
-prettyPrint(testTree.root);
-testTree.preOrder((x) => 2 * x);
-prettyPrint(testTree.root);
-testTree.postOrder((x) => 2 * x);
-
-prettyPrint(testTree.root);
-
-console.log(testTree.height(410));
-console.log(testTree.depth(24));
-
-console.log(testTree.isBalanced());
-testTree.rebalance();
-prettyPrint(testTree.root);
+export {Node, Tree, prettyPrint}
