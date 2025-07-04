@@ -115,7 +115,7 @@ class Tree {
       console.log(currentNode.data);
       if (currentNode.left) {
         queue.push(currentNode.left);
-      } 
+      }
       if (currentNode.right) {
         queue.push(currentNode.right);
       }
@@ -130,14 +130,14 @@ class Tree {
       throw new Error("There is no root node");
     }
     function inOrderStep(root) {
-        if (root.left != null) {
-            inOrderStep(root.left);
-        }
-        root.data = callback(root.data);
-        console.log(`new data is ${root.data}`)
-        if (root.right != null) {
-            inOrderStep(root.right);
-        }
+      if (root.left != null) {
+        inOrderStep(root.left);
+      }
+      root.data = callback(root.data);
+      console.log(`new data is ${root.data}`);
+      if (root.right != null) {
+        inOrderStep(root.right);
+      }
     }
 
     inOrderStep(this.root);
@@ -150,15 +150,15 @@ class Tree {
       throw new Error("There is no root node");
     }
     function preOrderStep(root) {
-        root.data = callback(root.data);
-        console.log(`new data is ${root.data}`)
-        if (root.left != null) {
-            preOrderStep(root.left);
-        }
-        
-        if (root.right != null) {
-            preOrderStep(root.right);
-        }
+      root.data = callback(root.data);
+      console.log(`new data is ${root.data}`);
+      if (root.left != null) {
+        preOrderStep(root.left);
+      }
+
+      if (root.right != null) {
+        preOrderStep(root.right);
+      }
     }
 
     preOrderStep(this.root);
@@ -171,23 +171,63 @@ class Tree {
       throw new Error("There is no root node");
     }
     function postOrderStep(root) {
-        if (root.left != null) {
-            postOrderStep(root.left);
-        }
-        
-        if (root.right != null) {
-            postOrderStep(root.right);
-        }
-        root.data = callback(root.data);
-        console.log(`new data is ${root.data}`)
+      if (root.left != null) {
+        postOrderStep(root.left);
+      }
+
+      if (root.right != null) {
+        postOrderStep(root.right);
+      }
+      root.data = callback(root.data);
+      console.log(`new data is ${root.data}`);
     }
 
     postOrderStep(this.root);
   }
 
-  height(value) {}
+  height(value) {
+    if (this.find(value)) {
+      function heightStep(node) {
+        let leftHeight = 0;
+        let rightHeight = 0;
+        if (node.left != null) {
+          leftHeight += 1;
+          leftHeight += heightStep(node.left);
+        }
+        if (node.right != null) {
+          rightHeight += 1;
+          rightHeight += heightStep(node.right);
+        }
+        return Math.max(leftHeight, rightHeight);
+      }
 
-  depth(value) {}
+      return heightStep(this.find(value));
+    } else {
+      return `${value} doesn't exist within tree.`;
+    }
+  }
+
+  depth(value) {
+    if (this.find(value)) {
+      let depth = 0;
+
+      function findDepth(value, node) {
+
+        if (value > node.data) {
+          depth += 1;
+          findDepth(value, node.right);
+          
+        } else if (value < node.data) {
+          depth += 1;
+          findDepth(value, node.left);
+        }
+      }
+      findDepth(value, this.root);
+      return depth;
+    } else {
+      return `${value} doesn't exist within tree.`;
+    }
+  }
 
   isBalanced() {}
 
@@ -219,11 +259,13 @@ testTree.insert(0);
 
 prettyPrint(testTree.root);
 
-testTree.inOrder((x) => 2*x);
+testTree.inOrder((x) => 2 * x);
 prettyPrint(testTree.root);
-testTree.preOrder((x) => 2*x);
+testTree.preOrder((x) => 2 * x);
 prettyPrint(testTree.root);
-testTree.postOrder((x) => 2*x);
+testTree.postOrder((x) => 2 * x);
 
-
 prettyPrint(testTree.root);
+
+console.log(testTree.height(410));
+console.log(testTree.depth(24));
