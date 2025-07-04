@@ -112,7 +112,6 @@ class Tree {
     while (queue.length != 0) {
       let currentNode = queue[0];
       currentNode.data = callback(currentNode.data);
-      console.log(currentNode.data);
       if (currentNode.left) {
         queue.push(currentNode.left);
       }
@@ -212,11 +211,9 @@ class Tree {
       let depth = 0;
 
       function findDepth(value, node) {
-
         if (value > node.data) {
           depth += 1;
           findDepth(value, node.right);
-          
         } else if (value < node.data) {
           depth += 1;
           findDepth(value, node.left);
@@ -229,7 +226,53 @@ class Tree {
     }
   }
 
-  isBalanced() {}
+  isBalanced() {
+    const checkBalanced = (node) => {
+      let rightHeight = 0;
+      let leftHeight = 0;
+      if (node.right != null) {
+        rightHeight = this.height(node.right.data);
+      }
+      if (node.left != null) {
+        leftHeight = this.height(node.left.data);
+      }
+
+      if (Math.abs(rightHeight - leftHeight) <= 1) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    let nodeList = [];
+    let queue = [this.root];
+
+    function findNodes() {
+      while (queue.length != 0) {
+        let currentNode = queue[0];
+        nodeList.push(currentNode);
+        if (currentNode.left) {
+          queue.push(currentNode.left);
+        }
+        if (currentNode.right) {
+          queue.push(currentNode.right);
+        }
+        queue.shift();
+      }
+    }
+
+    findNodes();
+
+    let isBalanced = true;
+
+    for (const node of nodeList) {
+      if (!checkBalanced(node)) {
+        isBalanced = false;
+      }
+    }
+
+    return isBalanced;
+  }
 
   rebalance() {}
 }
@@ -269,3 +312,5 @@ prettyPrint(testTree.root);
 
 console.log(testTree.height(410));
 console.log(testTree.depth(24));
+
+console.log(testTree.isBalanced());
