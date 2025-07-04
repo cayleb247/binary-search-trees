@@ -18,8 +18,8 @@ class Tree {
       let node = new Node(array[0]);
       return node;
     } else if (array.length == 2) {
-      let node = new Node(array[0]);
-      node.right = this.buildTree([array[1]]);
+      let node = new Node(array[1]);
+      node.left = this.buildTree([array[0]]);
       return node;
     } else {
       let rootIndex = Math.floor(array.length / 2);
@@ -133,7 +133,6 @@ class Tree {
         inOrderStep(root.left);
       }
       root.data = callback(root.data);
-      console.log(`new data is ${root.data}`);
       if (root.right != null) {
         inOrderStep(root.right);
       }
@@ -274,10 +273,19 @@ class Tree {
     return isBalanced;
   }
 
-  rebalance() {}
+  rebalance() {
+    let treeData = []
+    this.inOrder(x => treeData.push(x));
+    console.log(treeData);
+    this.root = this.buildTree(mergeSort([...new Set(treeData)]));
+  }
 }
 
-let testArray = [2, 3, 1, 5, 4, 9];
+let testArray = [
+   0, 2,  4, 12,
+  40, 48, 72, 264
+];
+
 
 let testTree = new Tree(testArray);
 
@@ -314,3 +322,5 @@ console.log(testTree.height(410));
 console.log(testTree.depth(24));
 
 console.log(testTree.isBalanced());
+testTree.rebalance();
+prettyPrint(testTree.root);
